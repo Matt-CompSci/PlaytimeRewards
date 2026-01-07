@@ -8,11 +8,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 import java.io.File;
 import java.util.Comparator;
 
 public class PlayTimeRewardsCommands {
+
+    public static void onRegisterCommands(RegisterCommandsEvent event ) {
+        register( event.getDispatcher());
+    }
+
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher ) {
         dispatcher.register(
                 Commands.literal("playtime")
@@ -117,6 +123,5 @@ public class PlayTimeRewardsCommands {
 
         return 1;
     }
-
 
 }

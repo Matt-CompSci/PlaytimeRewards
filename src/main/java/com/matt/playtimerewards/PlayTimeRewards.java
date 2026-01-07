@@ -35,15 +35,9 @@ public class PlayTimeRewards {
         File configDir = FMLPaths.CONFIGDIR.get().toFile();
         ModConfig = PlayTimeConfig.load(configDir);
 
-        modEventBus.addListener(this::onRegisterCommands);
-
-        // Register ourselves for server and other game events we are interested in.
-        // Note that this is necessary if and only if we want *this* class (PlayTimeRewards) to respond directly to events.
-        // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
-        NeoForge.EVENT_BUS.register(this);
+        modEventBus.addListener(PlayTimeRewardsCommands::onRegisterCommands);
+        NeoForge.EVENT_BUS.register(new PlayTimeEvents());
     }
-
-    private static boolean isHourBoundary(long ticks) { return ticks > 0 && ticks % 72000 == 0; }
 
     private static void runServerCommand(Player player, String rawCommand) {
         if (rawCommand == null || rawCommand.isBlank()) return;
@@ -61,7 +55,7 @@ public class PlayTimeRewards {
         );
     }
 
-    private static void reward( Player player, long ticks ) {
+    public static void reward( Player player, long ticks ) {
         long seconds = ticks / 20;
         long minutes = seconds / 60;
         long hours = minutes / 60;
@@ -85,25 +79,9 @@ public class PlayTimeRewards {
         }
     }
 
-    @SubscribeEvent
-    public void onPlayerTick(PlayerTickEvent event) {
-        Player player = event.getEntity();
-        if( player.level().isClientSide() ) return;
-
-        var data = player.getPersistentData();
-        long ticks = data.getLong( "playtimerewards_playtime" );
-        data.putLong( "playtimerewards_playtime", ticks + 1 );
-
-        if (isHourBoundary(ticks)) {
-            reward(player, ticks);
-        }
-    }
-
     private void commonSetup(FMLCommonSetupEvent event) {
         LOGGER.info("Loaded PlayTime Rewards");
     }
 
-    private void onRegisterCommands( RegisterCommandsEvent event ) {
-        PlayTimeRewardsCommands.register( event.getDispatcher() );
-    }
+
 }
