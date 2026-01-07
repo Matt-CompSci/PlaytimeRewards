@@ -104,7 +104,7 @@ public class PlayTimeRewardsCommands {
         var sorted = players.stream()
                 .sorted(Comparator.comparingLong(
                         p -> p.getPersistentData().getLong("playtimerewards_playtime")
-                ))
+                ).reversed())
                 .limit(10)
                 .toList();
 
