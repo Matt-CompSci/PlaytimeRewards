@@ -7,7 +7,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 public class PlayTimeEvents {
 
     @SubscribeEvent
-    public void onPlayerTick(PlayerTickEvent event) {
+    public void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
         if (player.level().isClientSide()) return;
 

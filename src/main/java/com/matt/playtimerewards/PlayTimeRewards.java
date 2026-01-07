@@ -1,10 +1,7 @@
 package com.matt.playtimerewards;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.loading.FMLPaths;
-import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
@@ -12,7 +9,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
-
 import java.io.File;
 import java.util.Objects;
 
@@ -35,7 +31,7 @@ public class PlayTimeRewards {
         File configDir = FMLPaths.CONFIGDIR.get().toFile();
         ModConfig = PlayTimeConfig.load(configDir);
 
-        modEventBus.addListener(PlayTimeRewardsCommands::onRegisterCommands);
+        NeoForge.EVENT_BUS.addListener(PlayTimeRewardsCommands::onRegisterCommands);
         NeoForge.EVENT_BUS.register(new PlayTimeEvents());
     }
 
