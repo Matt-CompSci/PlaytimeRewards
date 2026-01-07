@@ -1,0 +1,13 @@
+{
+  "itemGroup.playtimerewards": "Example Mod Tab",
+  "block.playtimerewards.example_block": "Example Block",
+  "item.playtimerewards.example_item": "Example Item",
+
+  "playtimerewards.configuration.title": "PlayTimeRewards Configs",
+  "playtimerewards.configuration.section.playtimerewards.common.toml": "PlayTimeRewards Configs",
+  "playtimerewards.configuration.section.playtimerewards.common.toml.title": "PlayTimeRewards Configs",
+  "playtimerewards.configuration.items": "Item List",
+  "playtimerewards.configuration.logDirtBlock": "Log Dirt Block",
+  "playtimerewards.configuration.magicNumberIntroduction": "Magic Number Text",
+  "playtimerewards.configuration.magicNumber": "Magic Number"
+}
