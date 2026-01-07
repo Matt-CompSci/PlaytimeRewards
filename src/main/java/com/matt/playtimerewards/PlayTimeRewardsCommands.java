@@ -101,12 +101,7 @@ public class PlayTimeRewardsCommands {
         var server = source.getServer();
         var players = server.getPlayerList().getPlayers();
 
-        var sorted = players.stream()
-                .sorted(Comparator.comparingLong(
-                        p -> p.getPersistentData().getLong("playtimerewards_playtime")
-                ).reversed())
-                .limit(10)
-                .toList();
+        var sorted = players.stream() .sorted(Comparator.comparingLong( p -> -p.getPersistentData().getLong("playtimerewards_playtime") )) .limit(10) .toList();
 
         sendMessage(source, "Top Playtimes:");
 
