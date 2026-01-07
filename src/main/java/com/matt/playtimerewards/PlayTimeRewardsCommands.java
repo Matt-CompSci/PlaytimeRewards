@@ -58,7 +58,7 @@ public class PlayTimeRewardsCommands {
     }
 
     private static void sendPlaytime(CommandSourceStack source, ServerPlayer player) {
-        long ticks = player.getPersistentData().getLong("playtimerewards_playtime");
+        long ticks = PlayTimeCache.getTicks( player.getUUID() );
         String time = formatPlaytime(ticks);
         String msg = "%s has played for %s".formatted(player.getName().getString(), time);
         sendMessage(source, msg);
@@ -77,9 +77,8 @@ public class PlayTimeRewardsCommands {
         Player player = source.getPlayer();
 
         if( player == null ) return 0;
-        var data = player.getPersistentData();
-        long ticks = data.getLong( "playtimerewards_playtime" );
 
+        long ticks = PlayTimeCache.getTicks( player.getUUID() );
         String time = formatPlaytime(ticks);
         String msg = "%s has played for %s".formatted(player.getName().getString(), time);
         source.sendSuccess(() -> Component.literal(msg), false);
@@ -101,13 +100,13 @@ public class PlayTimeRewardsCommands {
         var server = source.getServer();
         var players = server.getPlayerList().getPlayers();
 
-        var sorted = players.stream() .sorted(Comparator.comparingLong( p -> -p.getPersistentData().getLong("playtimerewards_playtime") )) .limit(10) .toList();
+        var sorted = players.stream() .sorted(Comparator.comparingLong( p -> -PlayTimeCache.getTicks(p.getUUID()) )) .limit(10) .toList();
 
         sendMessage(source, "Top Playtimes:");
 
         int rank = 1;
         for (ServerPlayer p : sorted) {
-            long ticks = p.getPersistentData().getLong("playtimerewards_playtime");
+            long ticks = PlayTimeCache.getTicks( p.getUUID() );
             String time = formatPlaytime(ticks);
 
             String line = "%d. %s — %s"

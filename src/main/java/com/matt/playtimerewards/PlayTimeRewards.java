@@ -1,6 +1,7 @@
 package com.matt.playtimerewards;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.storage.LevelResource;
 import net.neoforged.fml.loading.FMLPaths;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
@@ -21,6 +22,7 @@ public class PlayTimeRewards {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static PlayTimeConfig ModConfig;
+    public static PlayTimeCache PlayerSaves;
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
@@ -33,6 +35,7 @@ public class PlayTimeRewards {
 
         NeoForge.EVENT_BUS.addListener(PlayTimeRewardsCommands::onRegisterCommands);
         NeoForge.EVENT_BUS.register(new PlayTimeEvents());
+        NeoForge.EVENT_BUS.register(PlayTimeAutosaveEvents.class);
     }
 
     private static void runServerCommand(Player player, String rawCommand) {
@@ -78,6 +81,5 @@ public class PlayTimeRewards {
     private void commonSetup(FMLCommonSetupEvent event) {
         LOGGER.info("Loaded PlayTime Rewards");
     }
-
 
 }

@@ -11,9 +11,8 @@ public class PlayTimeEvents {
         Player player = event.getEntity();
         if (player.level().isClientSide()) return;
 
-        var data = player.getPersistentData();
-        long ticks = data.getLong("playtimerewards_playtime");
-        data.putLong("playtimerewards_playtime", ticks + 1);
+        PlayTimeCache.addTicks( player.getUUID(), 1 );
+        long ticks = PlayTimeCache.getTicks( player.getUUID() );
 
         if (ticks > 0 && ticks % 72000 == 0) {
             PlayTimeRewards.reward(player, ticks);
