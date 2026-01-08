@@ -1,6 +1,9 @@
 package com.matt.playtimerewards;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.storage.LevelResource;
+import net.minecraft.world.scores.Scoreboard;
+import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
@@ -8,6 +11,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 
 import java.io.File;
+import java.text.NumberFormat;
 
 public class PlayTimeAutosaveEvents {
 
@@ -42,10 +46,9 @@ public class PlayTimeAutosaveEvents {
     public static void onServerStarting(ServerStartingEvent event) {
         var server = event.getServer();
 
-        File dataDir = server.getWorldPath(LevelResource.ROOT)
-                .resolve("data")
-                .toFile();
-
+        // Load your data
+        File dataDir = server.getWorldPath(LevelResource.ROOT).resolve("data").toFile();
         PlayTimeCache.load(dataDir);
     }
+
 }

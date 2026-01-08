@@ -1,6 +1,7 @@
 package com.matt.playtimerewards;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -29,6 +30,9 @@ public class PlayTimeCache {
         diskModel.save(saveFile);
     }
 
+    public static Map<String, Long> getAll() {
+        return Collections.unmodifiableMap(memoryMap);
+    }
 
     public static long getTicks(UUID uuid) {
         return memoryMap.getOrDefault(uuid.toString(), 0L);

@@ -12,6 +12,8 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 import java.io.File;
 import java.util.Comparator;
+import java.util.Map;
+import java.util.UUID;
 
 public class PlayTimeRewardsCommands {
 
@@ -98,24 +100,45 @@ public class PlayTimeRewardsCommands {
 
     private static int showTop(CommandSourceStack source) {
         var server = source.getServer();
-        var players = server.getPlayerList().getPlayers();
 
-        var sorted = players.stream() .sorted(Comparator.comparingLong( p -> -PlayTimeCache.getTicks(p.getUUID()) )) .limit(10) .toList();
+        // Pull all stored playtimes from your in-memory model
+        Map<String, Long> all = PlayTimeCache.getAll(); // You add this accessor
+
+        if (all.isEmpty()) {
+            sendMessage(source, "No playtime data recorded yet.");
+            return 1;
+        }
+
+        // Sort by ticks descending
+        var sorted = all.entrySet().stream()
+                .sorted(Comparator.comparingLong(e -> -e.getValue()))
+                .limit(10)
+                .toList();
 
         sendMessage(source, "Top Playtimes:");
 
         int rank = 1;
-        for (ServerPlayer p : sorted) {
-            long ticks = PlayTimeCache.getTicks( p.getUUID() );
+        for (var entry : sorted) {
+            UUID uuid = UUID.fromString(entry.getKey());
+            long ticks = entry.getValue();
+
+            // Resolve name using profile cache
+            var profile = server.getProfileCache().get(uuid).orElse(null);
+            String name = (profile != null)
+                    ? profile.getName()
+                    : uuid.toString(); // fallback
+
             String time = formatPlaytime(ticks);
 
             String line = "%d. %s — %s"
-                    .formatted(rank++, p.getName().getString(), time);
+                    .formatted(rank++, name, time);
 
             sendMessage(source, line);
         }
 
         return 1;
     }
+
+
 
 }
